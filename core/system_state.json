@@ -1,0 +1,10 @@
+{
+  "mode": "active",
+  "focus": "system_execution",
+  "current_layer": "application",
+  "store_status": "connected",
+  "execution": "running",
+  "next_action": "idle",
+  "queue": [],
+  "last_action": "run_queue"
+}
