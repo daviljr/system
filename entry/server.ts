@@ -1,7 +1,8 @@
 import express from 'express';
-import { CoreDecisions } from '../domain/decisions';
+import { CoreDecisions } from '@domain/decisions';
 
 const app = express();
+
 app.use(express.json());
 
 // 🔹 Health check (essencial pra deploy)
@@ -26,8 +27,4 @@ app.post('/decidir', (req, res) => {
   });
 });
 
-const PORT = process.env.PORT || 3000;
-
-app.listen(PORT, () => {
-  console.log(`🚀 CoreHub rodando em http://localhost:${PORT}`);
-});
+export default app;
