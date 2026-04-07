@@ -1,5 +1,6 @@
 import express from 'express';
 import { CoreDecisions } from '../domain/decisions';
+import { supabase } from '../core/supabase';
 
 const app = express();
 
@@ -11,7 +12,7 @@ app.get('/health', (_, res) => {
 });
 
 // Endpoint principal
-app.post('/decidir', (req, res) => {
+app.post('/decidir', async (req, res) => {
   try {
     const result = CoreDecisions.confirmarExecucao(req.body);
 
@@ -22,11 +23,27 @@ app.post('/decidir', (req, res) => {
       });
     }
 
+    // 🔹 Salva no Supabase
+    const { error } = await supabase
+      .from('decisions')
+      .insert([
+        {
+          input: req.body,
+          output: result.data,
+        },
+      ]);
+
+    if (error) {
+      console.error('Erro ao salvar no Supabase:', error);
+    }
+
     return res.json({
       success: true,
       data: result.data,
     });
   } catch (err) {
+    console.error('Erro interno:', err);
+
     return res.status(500).json({
       success: false,
       error: {

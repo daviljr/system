@@ -10,7 +10,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.101.1",
+    "@supabase/supabase-js": "^2.102.1",
     "express": "^5.2.1",
     "openai": "^6.33.0",
     "tsconfig-paths": "^4.2.0"
