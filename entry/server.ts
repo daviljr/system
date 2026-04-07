@@ -1,47 +1,33 @@
-import express from "express";
-import { decide } from "../core/decision.engine";
-import { runQueue } from "../core/executor";
-import { listToys, createToy } from "../adapters/toy.repository";
+import express from 'express';
+import { CoreDecisions } from '../domain/decisions';
 
 const app = express();
-const port = process.env.PORT || 3000;
-
 app.use(express.json());
 
-// health check
-app.get("/", (req, res) => {
-  res.send("CoreHub API rodando 🚀");
+// 🔹 Health check (essencial pra deploy)
+app.get('/health', (_, res) => {
+  res.json({ status: 'ok' });
 });
 
-// rodar o sistema (loop)
-app.post("/run", async (req, res) => {
-  const state = {};
+// 🔹 Endpoint principal
+app.post('/decidir', (req, res) => {
+  const result = CoreDecisions.confirmarExecucao(req.body);
 
-  const queue = decide(state);
+  if (!result.ok) {
+    return res.status(400).json({
+      success: false,
+      error: result.error,
+    });
+  }
 
-  await runQueue(queue);
-
-  res.json({
-    status: "executado",
-    queue,
+  return res.json({
+    success: true,
+    data: result.data,
   });
 });
 
-// listar toys (dados reais)
-app.get("/toys", async (req, res) => {
-  const toys = await listToys();
-  res.json(toys);
-});
+const PORT = process.env.PORT || 3000;
 
-// criar toy manual
-app.post("/toys", async (req, res) => {
-  const { name } = req.body;
-
-  const toy = await createToy(name || "Toy via API");
-
-  res.json(toy);
-});
-
-app.listen(port, () => {
-  console.log(`Servidor rodando em http://localhost:${port}`);
+app.listen(PORT, () => {
+  console.log(`🚀 CoreHub rodando em http://localhost:${PORT}`);
 });

@@ -3,16 +3,31 @@
     "target": "ES2020",
     "module": "CommonJS",
     "moduleResolution": "Node",
+
+    "rootDir": ".",
+    "outDir": "dist",
+    "baseUrl": ".",
+
+    "paths": {
+      "@entry/*": ["entry/*"],
+      "@app/*": ["app/*"],
+      "@core/*": ["core/*"],
+      "@domain/*": ["domain/*"]
+    },
+
     "strict": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
-    "allowImportingTsExtensions": true,
+
     "resolveJsonModule": true,
-    "types": ["node"],
-    "rootDir": ".",
-    "baseUrl": "."
+    "types": ["node"]
   },
-  "include": ["**/*.ts"],
+  "include": [
+    "entry/**/*.ts",
+    "app/**/*.ts",
+    "domain/**/*.ts",
+    "core/**/*.ts"
+  ],
   "exclude": ["node_modules", "dist"]
 }

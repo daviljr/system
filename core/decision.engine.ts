@@ -1,5 +1,4 @@
-import { getDecision } from "./intelligence.adapter";
-
 export function decide(state: any): string[] {
-  return getDecision({ state });
+  // decisão simples inicial (mock)
+  return ["PROCESS_PAYMENT"];
 }

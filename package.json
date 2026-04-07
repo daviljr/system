@@ -1,21 +1,25 @@
 {
   "name": "system",
   "version": "1.0.0",
+  "description": "System — arquitetura modular orientada a decisões",
   "main": "dist/entry/server.js",
   "scripts": {
-    "dev": "ts-node entry/server.ts",
+    "dev": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register entry/server.ts",
     "build": "tsc",
-    "start": "node dist/entry/server.js"
+    "start": "node dist/entry/server.js",
+    "clean": "rm -rf dist"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.101.1",
     "express": "^5.2.1",
-    "openai": "^6.33.0"
+    "openai": "^6.33.0",
+    "tsconfig-paths": "^4.2.0"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",
     "@types/node": "^25.5.2",
     "ts-node": "^10.9.2",
-    "typescript": "^5.6.3"
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.9.3"
   }
 }

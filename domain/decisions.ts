@@ -1,33 +1,19 @@
-/**
- * CORE — DECISIONS
- *
- * Este arquivo contém DECISÕES COMPOSTAS do Core.
- *
- * Decisions:
- * - Orquestram rules + policies
- * - Retornam DecisionResult
- *
- * Este arquivo:
- * - NÃO executa infraestrutura
- * - NÃO altera estados persistentes
- * - NÃO conhece Application
- */
-
 import { DecisionResult } from './decision_result';
-import { CoreRules } from './rules';
-import { CorePolicies } from './policies';
+import { selecionarParceiro } from './policies';
 import { CoreErrorCode } from './errors';
 import {
   ConfirmarExecucaoInput,
   ConfirmarExecucaoOutput,
 } from './contracts';
+import { PedidoState } from './state';
 
 export const CoreDecisions = {
   confirmarExecucao(
     input: ConfirmarExecucaoInput
   ): DecisionResult<ConfirmarExecucaoOutput> {
 
-    if (!CoreRules.podeExecutar(input.pedidoState)) {
+    // 🔹 Regra de domínio (forte e tipada)
+    if (!input || input.pedidoState !== PedidoState.PRONTO) {
       return {
         ok: false,
         error: {
@@ -37,7 +23,8 @@ export const CoreDecisions = {
       };
     }
 
-    const parceiro = CorePolicies.escolherParceiro(input.parceiros);
+    // 🔹 Política isolada
+    const parceiro = selecionarParceiro(input);
 
     if (!parceiro) {
       return {

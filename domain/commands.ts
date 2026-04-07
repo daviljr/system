@@ -10,7 +10,6 @@
  * Recebem estado + intenção
  * Retornam novo estado
  */
-
 import {
   PedidoState,
   ExecucaoState,
@@ -22,11 +21,12 @@ import * as Rules from './rules';
 /* =========================
  * PEDIDO
  * ========================= */
-
 export function marcarPedidoComoPago(
   pedidoState: PedidoState
 ): PedidoState {
-  Rules.podeProcessarPagamento(pedidoState);
+  if (!Rules.podeProcessarPagamento(pedidoState)) {
+    throw new Error("Pedido não pode ser pago");
+  }
 
   return PedidoState.PAGO;
 }
@@ -34,12 +34,13 @@ export function marcarPedidoComoPago(
 /* =========================
  * EXECUÇÃO
  * ========================= */
-
 export function confirmarExecucao(
   pedidoState: PedidoState,
   execucaoState: ExecucaoState
 ): ExecucaoState {
-  Rules.podeConfirmarExecucao(pedidoState, execucaoState);
+  if (!Rules.podeConfirmarExecucao(pedidoState, execucaoState)) {
+    throw new Error("Execução não pode ser confirmada");
+  }
 
   return ExecucaoState.CONFIRMADA;
 }
@@ -47,11 +48,12 @@ export function confirmarExecucao(
 /* =========================
  * PARCEIRO
  * ========================= */
-
 export function bloquearParceiro(
   parceiroState: ParceiroState
 ): ParceiroState {
-  Rules.parceiroEhElegivel(parceiroState);
+  if (!Rules.parceiroEhElegivel(parceiroState)) {
+    throw new Error("Parceiro já está inelegível");
+  }
 
   return ParceiroState.BLOQUEADO;
 }
