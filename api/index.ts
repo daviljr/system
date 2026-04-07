@@ -1,4 +1,3 @@
-import app from "../entry/server";
+import app from '../app/server';
 
-// Exporta o app como handler serverless
 export default app;
