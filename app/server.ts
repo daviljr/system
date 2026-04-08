@@ -15,12 +15,15 @@ app.get('/health', (_, res) => {
 app.post('/decidir', async (req, res) => {
   try {
     const result = CoreDecisions.confirmarExecucao(req.body);
-      console.log('INPUT:', req.body);
-      console.log('RESULT:', result);
+
+    console.log('INPUT:', req.body);
+    console.log('RESULT:', result);
+
+    // 🔥 DEBUG DIRETO NA RESPOSTA
     if (!result.ok) {
       return res.status(400).json({
         success: false,
-        error: result.error,
+        debug: result, // 👈 AGORA VAI VIR COMPLETO NA RESPOSTA
       });
     }
 
